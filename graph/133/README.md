@@ -3,7 +3,6 @@
 [link](https://leetcode.com/problems/clone-graph/)
 
 ## Classify
-![alt text](<imgs/133.png>)
 這題屬於 Graph 遍歷的問題，需要 Deep Copy 一個無向圖。因為圖中可能存在環 (Cycle)，所以必須使用 Hash Table (Dictionary) 來記錄已經複製過的節點，避免無窮迴圈。可以使用 DFS 或 BFS 來實作。
 
 ## Line of thought
