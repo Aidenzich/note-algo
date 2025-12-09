@@ -4,6 +4,7 @@ https://leetcode.com/problems/snakes-and-ladders/description/
 
 
 ## Solution
+### 2D Array
 ```python
 from collections import deque
 
@@ -60,6 +61,61 @@ class Solution:
                     return step + 1
                 
                 # 若沒走過，加入 Queue
+                if destination not in visited:
+                    visited.add(destination)
+                    queue.append((destination, step + 1))
+                
+        return -1
+```
+
+### 1D Array
+```python
+from collections import deque
+from typing import List
+
+class Solution:
+    def snakesAndLadders(self, board: List[List[int]]) -> int:
+        n = len(board)
+        target = n * n
+                
+        cells = [0] * (target + 1)
+        label = 1
+        
+        for r in range(n - 1, -1, -1):
+            curr_row = board[r]
+            
+            # 計算這是從底部數上來的第幾行 (0, 1, 2...)
+            row_from_bottom = n - 1 - r
+            
+            # 如果是奇數行 (1, 3, 5...)，方向要是 右 -> 左            
+            if row_from_bottom % 2 == 1:
+                curr_row = curr_row[::-1]
+                        
+            for val in curr_row: 
+                cells[label] = val
+                label += 1
+                
+        queue = deque([(1, 0)])
+        visited = {1}
+        
+        while queue:
+            curr, step = queue.popleft()
+            
+            # 嘗試擲骰子 1 到 6
+            for i in range(1, 7):
+                next_val = curr + i
+                
+                # 超出邊界
+                if next_val > target:
+                    break
+                                
+                destination = next_val
+                if cells[next_val] != -1:
+                    destination = cells[next_val]
+                
+                if destination == target:
+                    return step + 1
+                
                 if destination not in visited:
                     visited.add(destination)
                     queue.append((destination, step + 1))
