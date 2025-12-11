@@ -11,13 +11,9 @@
 1.  **Postorder** 是用來看「root」在哪裡的，根據 postorder 的順序： **左節點 -> 右節點 -> 父節點**，我們可以知道，在 postorder 陣列中，**最後一個**元素就是我們要找的 Tree 的 root。
 2.  **Inorder** 是用來決定「放哪邊」的，我們透過在 postorder 找到的 root, 透過遞迴的順序決定會是放在左邊或右邊。
 
-因此我們透過建立一個 inorder 的 map, 讓我們可以直接透過 root 的 val 定義到它在 inorder 中的位置，從而可以決定下一個 build 的區間範圍。
+因此我們透過建立一個 inorder 的 map, 讓我們可以直接透過 root 的 val 定義到它在 inorder 中的位置，從而可以決定下一個 build 的區間範圍。 並且我們使用一個變數 `root_index`，來記錄在 postorder 順序時，root 移動到哪個位置（**注意：Postorder 會從陣列的尾端開始往前移動**）。
 
-並且我們使用一個變數 `root_index`，來記錄在 postorder 順序時，root 移動到哪個位置（**注意：Postorder 會從陣列的尾端開始往前移動**）。
-
-而我們 build 的函式則可以定義為輸入是 `l` 與 `r`, 代表從該區間 `[l, r]` 中，建立一個新的 root 節點，並決定好其 left 與 right 節點。
-
-在 `build` 函式中，必須**先遞迴建立右子樹** (`root.right`)，**再建立左子樹** (`root.left`)。
+而我們 build 的函式則可以定義為輸入是 `l` 與 `r`, 代表從該區間 `[l, r]` 中，建立一個新的 root 節點，並決定好其 left 與 right 節點。 在 `build` 函式中，必須**先遞迴建立右子樹** (`root.right`)，**再建立左子樹** (`root.left`)。
 
 這是因為 `root_index` 是依賴 `Postorder` 的 **[ (左子樹), (右子樹), 根 ]** 順序來「**逆序**」消耗節點的（從 `postorder` 陣列的末尾開始）。`root.right` 的呼叫會負責消耗掉所有 `postorder` 陣列中屬於右子樹的節點，之後 `root_index` 才會剛好指向左子樹的「**結尾**」(即左子樹的根)。
 
