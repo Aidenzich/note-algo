@@ -7,13 +7,11 @@
 ## Solution
 ```python
 class KthLargest:
-
     def __init__(self, k: int, nums: List[int]):
         self.heap = []
         self.k = k
         for num in nums:
-            self.add(num)
-        
+            self.add(num)        
 
     def add(self, val: int) -> int:
         heapq.heappush(self.heap, val)
