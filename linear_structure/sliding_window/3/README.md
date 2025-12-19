@@ -1,6 +1,9 @@
 # Leetcode 3. Longest Substring Without Repeating Characters
 
 
+## Line of Thought
+題目要求我們找到一個最長的子字串，其中所有字符都是唯一的. 
+
 ## Solution.
 ```python
 class Solution:
@@ -22,3 +25,4 @@ class Solution:
 
         return max_len
 ```
+
