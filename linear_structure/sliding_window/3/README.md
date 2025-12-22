@@ -14,14 +14,14 @@ class Solution:
         max_len = 0
 
         # dvdf
-        for idx, c in enumerate(s):
-            while s[idx] in window_data:
+        for r, c in enumerate(s):
+            while s[r] in window_data:
                 window_data.remove(s[l])
                 l += 1
             
             window_data.add(c)
 
-            max_len = max(idx - l + 1, max_len)
+            max_len = max(r - l + 1, max_len)
 
         return max_len
 ```
