@@ -1,0 +1,23 @@
+# 主題：LeetCode 239. Sliding Window Maximum (Sliding Window + Monotonic Queue)
+
+cards:
+  - front: "在 Sliding Window Maximum 問題中，如果直接使用 `max(window)` 暴力解，時間複雜度是多少？為什麼？"
+    back: "時間複雜度是 $O(N \\times k)$。\n因為對於 N 個視窗，每次都需要花 $O(k)$ 的時間掃描整個視窗來尋找最大值，導致在 k 很大時超時。"
+
+  - front: "為了將 Sliding Window Maximum 優化至 $O(N)$，我們應該使用什麼資料結構？"
+    back: "Double Ended Queue (Deque)，用來實作「單調遞減隊列」（Monotonic Decreasing Queue）。"
+
+  - front: "在 Monotonic Queue 的解法中，Deque 裡面應該儲存「數值」還是「Index」？為什麼？"
+    back: "應該儲存 **Index**。\n因為我們需要利用 Index 來判斷目前隊列頭部（最大值）是否已經滑出視窗範圍（Out of window）。"
+
+  - front: "在迭代過程中，當新元素 `nums[r]` 大於 Deque 尾端的元素時 (`nums[dq[-1]] < nums[r]`)，為什麼要將尾端元素 pop 掉？"
+    back: "因為這些較小的元素 **永遠不可能成為當前或未來的最大值** 了（新的元素比它大且更晚離開視窗）。這操作是為了維持隊列的單調遞減特性。"
+
+  - front: "在 Monotonic Queue 解法中，`dq[0]` (隊列頭部) 代表什麼意義？"
+    back: "`dq[0]` 永遠儲存著 **當前視窗內最大值的 Index**。"
+
+  - front: "什麼時候需要執行 `dq.popleft()` (從頭部移除元素)？"
+    back: "當 `dq[0]` 小於左邊界 `l` (即 `dq[0] < r - k + 1`) 時。\n這表示目前的最大值已經滑出了視窗範圍，不再有效。"
+
+  - front: "為什麼 Monotonic Queue 解法中雖然有雙重迴圈（for 裡面有 while），時間複雜度卻是 $O(N)$？"
+    back: "因為每個元素最多只會被 `push` 進 Deque 一次，也最多被 `pop` 出來一次。總操作次數與 N 成正比，屬於 Amortized Analysis (攤銷分析) 的結果。"
