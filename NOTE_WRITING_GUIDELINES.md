@@ -8,25 +8,45 @@
   * **目錄命名**：每個題目應有獨立的目錄，通常以題目 ID 命名（例如：`54`, `135`）。
   * **檔案名稱**：筆記檔案一律命名為 `README.md`。  
 
-## 2\. 內容結構 (Content Structure)
+## 2. 面試模擬框架 (UMPIR Framework)
+
+為了模擬真實面試情境，建議在練習與撰寫筆記時遵循 **UMPIR** 框架。這能幫助你將思維結構化，這正是面試官最看重的能力。
+
+*   **U (Understand) - 理解題目**
+    *   確認輸入/輸出格式、限制條件 (Constraints)、邊界狀況 (Edge Cases)。
+    *   *筆記對應*：思考過程的起點。
+*   **M (Match) - 模式識別**
+    *   連結類似題目、識別演算法模式 (Pattern Recognition)。
+    *   *筆記對應*：**`3.3 分類 (Classify)`**。
+*   **P (Plan) - 規劃解法**
+    *   規劃解題路徑、複雜度分析、撰寫 Pseudo-code。
+    *   *筆記對應*：**`3.4 思路 (Line of thought)`**。這是筆記的核心。
+*   **I (Implement) - 實作**
+    *   將邏輯轉換為程式碼。
+    *   *筆記對應*：**`3.5 解法 (Solution)`**。
+*   **R (Review) - 檢驗**
+    *   程式碼檢查 (Dry Run)、測試範例。
+    *   *筆記對應*：**`3.4 思路`** 中的「具體追蹤」與 **`3.6 陷阱與筆記`**。
+
+## 3\. 內容結構 (Content Structure)
 `README.md` 必須按順序包含以下章節：
 
-### 2.1 標題 (Header)
+### 3.1 標題 (Header)
 
   * **格式**：`# [Problem ID]. [Problem Name]`
   * **範例**：`# 135. Candy`
 
-### 2.2 連結 (Link)
+### 3.2 連結 (Link)
 
   * **內容**：直接連至 LeetCode 題目的連結。
   * **格式**：`https://leetcode.com/problems/...`
 
-### 2.3 分類 (Classify)
+### 3.3 分類 (Classify)
 
   * **標題**：`## Classify`
   * **描述**：簡述輸入格式與高層次的演算法策略（例如：「Two-Pass Algorithm」、「Sliding Window」）。重點在於直觀解釋為何「第一眼」會將此題歸類於此類別。
 
-### 2.4 思路 (Line of thought) — 核心區塊
+### 3.4 思路 (Line of thought) — 核心區塊
   * **標題**：`## Line of thought`
   
   * **核心哲學**：**「重過程，輕定義」(Procedural over Declarative)。**
@@ -42,24 +62,19 @@
             ```
     3.  **視覺輔助 (Visual Aids)**：使用 ASCII 藝術、偽代碼 (pseudo-code) 區塊或圖表來解釋指標的移動。
 
-### 2.5 解法 (Solution)
-
+### 3.5 解法 (Solution)
   * **標題**：`## Solution`
   * **不同解法的複雜度**：`### Time O(X), Space O(Y)`
   * **程式碼**：
-      * 語言：Python
-      * 包在 `python` 程式碼區塊中。
-      * 包含完整的 `class Solution` 實作。
-      * **註解**：程式碼註解應遵循「直觀邏輯」風格，解釋區塊的*意圖*（例如：「檢查左半部是否有效」），而非單純翻譯語法。
+      * 語言：Python      
 
-### 2.6 陷阱與筆記 (Traps & Notes)（如適用）
+### 3.6 陷阱與筆記 (Traps & Notes)（如適用）
   * **格式**：`⚠️ 常見陷阱 (Trap): [Description]`
   * **內容**：提及邊界情況 (edge cases)、常見錯誤或需留意的邊界條件。
 
-## 3\. 風格指南 (Style Guidelines)
+## 4\. 風格指南 (Style Guidelines)
 * **語氣**：**直觀與抽象 (Intuitive)**。
     * 寫作對象是正在實作程式碼的開發者，而不是正在證明定理的數學家。
-    * 使用物理動詞（如 "slide" 滑動, "expand" 擴張, "cut" 切割, "jump" 跳躍）來描述演算法過程導向。
-    * 你的目標是讓讀者能理解你的想法，而不是用數學的「宣告導向」：雖然它在邏輯上是嚴謹的 Proof-correct，但它迫使讀者先去理解這個數學符號，再自己腦補轉換成程式碼的迴圈行為。這是在設「門檻」。對於一個已經知道要寫 Code 的人來說，這個轉換過程是多餘的腦力消耗
+    * 使用物理動詞（如 "slide" 滑動, "expand" 擴張, "cut" 切割, "jump" 跳躍）來描述演算法過程導向。    
 * **簡潔性**：偏好清晰、按部就班的邏輯流，勝過晦澀的一行文與冗長的數學式。
-* **排版**：善用 Markdown 功能（列表、粗體文字、程式碼區塊）來提升可讀性。避免整面牆的純文字 (walls of text)。
+* **排版**：善用 Markdown 功能（列表、粗體文字、程式碼區塊）來提升可讀性。
