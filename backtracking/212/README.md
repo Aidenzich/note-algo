@@ -5,7 +5,7 @@ https://leetcode.com/problems/word-search-ii/description/
 
 
 ## Solution
-### Time Complexity: $O(M * N * 4 * 3^{L - 1})$ Space Complexity: $O(K)$
+### Time Complexity: $O(M * N * 4 * 3^{L - 1})$ & Space Complexity: $O(K)$
 
 ```python
 class Solution:

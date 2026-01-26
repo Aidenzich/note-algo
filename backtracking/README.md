@@ -1,92 +1,80 @@
+# Backtracking
+`start` (index) 和 `curr` (path) 幾乎是 Backtracking（回溯法）的**黃金公式**。
+
+之所以這兩個參數就能解大部分題目，是因為 Backtracking 的本質就是 **「在樹（State Space Tree）上做深度優先搜尋（DFS）」**。
+
+這兩個變數剛好完美的定義了這棵「決策樹」的 **「現在在哪裡」** 和 **「下一步能去哪裡」**。
+
+### 核心原理
+#### 1. `curr`：定義「樹的節點」（目前選了什麼？）
+* **功能：** 紀錄當前的路徑或狀態。
+* **意義：** 這是我們「走到現在的歷史」。當 `len(curr) == k` 時，代表我們走到了樹的**葉節點（Leaf Node）**，找到了一組解。
+* **對應樹結構：** 樹上的每一個 Node，就是某一個時刻的 `curr` 狀態。
+
+#### 2. `start`：定義「樹的分支」（接下來能選什麼？）
+* **功能：** 控制搜尋空間（Search Space），也就是 `for` 迴圈的範圍。
+* **意義：** 這是最重要的部分。它用來**防止重複**並**控制順序**。
+* **為什麼需要它？**
+* 如果我們選了 `[1, 2]`，為了避免選出 `[2, 1]`（在組合問題中視為重複），我們必須規定：**「一旦選了 1，接下來只能看 1 後面的數字」**。
+* `start` 就像一道**閘門**，它告訴程式：「前面的數字已經處理過了（或在上一層選過了），現在只能往後看」。
 
 
-#### Leetcode 17. Letter Combinations of a Phone Number
+
+### 圖解觀念：State Space Tree (狀態空間樹)
+想像要從 `[1, 2, 3, 4]` 裡面選 2 個數字。
+程式運作時，其實是在長出一棵樹：
+
+1. **Level 0 (Root):** `start=1`。我們可以選 1, 2, 3, 4。
+2. **Level 1 (選了 1):** 呼叫 `backtrack(start=2, curr=[1])`。
+* 這時候 `start` 變成了 2。為什麼？因為 1 已經用過了。
+* 接下來的 `for` 迴圈從 2 開始跑，所以只能選 2, 3, 4。**絕對不會回頭去選 1**。
+
+
+3. **Level 1 (選了 2):** 呼叫 `backtrack(start=3, curr=[2])`。
+* 這時候 `start` 變成了 3。
+* 接下來只能選 3, 4。**絕對不會回頭去選 1 或 2**（因為 `[1, 2]` 已經在上面那條路走過了）。
+
+
+
+### 萬用模版 (The Template)
+
+幾乎所有的組合/子集/切割問題，都是這個模版的變形：
+
 ```python
-class Solution:
-    def letterCombinations(self, digits: str) -> List[str]:
-        if not digits:
-            return []
+def backtrack(start, curr):
+    # 1. 終止條件 (Base Case): 到達葉節點
+    if 滿足條件(curr):
+        res.append(curr[:])
+        return
 
-        mapping = {
-            "2": "abc",
-            "3": "def",
-            "4": "ghi",
-            "5": "jkl",
-            "6": "mno",
-            "7": "pqrs",
-            "8": "tuv",
-            "9": "wxyz"
-        }
+    # 2. 選擇列表 (Decision Space): 樹的分支
+    # start 控制了我們「還能選哪些數字」
+    for i in range(start, n + 1):
         
-        results = []
+        # (可選) 剪枝 (Pruning): 如果當前這條路明顯不通，直接 continue
         
-        def dfs(index, state):
-            if index == len(digits):
-                results.append(state)                
-                return 
+        # 3. 做選擇 (Make Choice)
+        curr.append(i)
+        
+        # 4. 進入下一層 (Next Level)
+        # 關鍵差異：
+        # 組合問題 (不可重複選): start = i + 1
+        # 組合問題 (可重複選同數字): start = i
+        # 排列問題 (Permutation): 不需要 start，而是需要 visited 陣列
+        backtrack(i + 1, curr) 
+        
+        # 5. 撤銷選擇 (Undo / Backtrack)
+        curr.pop()
 
-            bag = mapping[digits[index]]
-
-            for letter in bag:
-                dfs(index + 1, state + letter)
-
-
-        dfs(0, "")
-        return results
 ```
 
-#### Leetcode 46. Permutations
-```python
-class Solution:
-    def permute(self, nums: List[int]) -> List[List[int]]:
-        results = []
-        n = len(nums)
-        visited = set()
-        def dfs(state):
-            if len(state) == n:
-                results.append(state.copy())
-                return 
+### 例外情況：什麼時候不需要 `start`？
 
-            
-            for i in range(n):                    
-                if nums[i] not in visited:
-                    state.append(nums[i])
-                    visited.add(nums[i])
+雖然 `start` 很萬用，但有一種情況不能用 `start`：**全排列 (Permutations)**。
 
-                    dfs(state)
-
-                    # roll back
-                    state.pop()
-                    visited.remove(nums[i])
+* **組合 (Combination):** `[1, 2]` 和 `[2, 1]` 是一樣的。 -> **需要 `start**` 來強迫順序（只准往後選），避免回頭。
+* **排列 (Permutation):** `[1, 2]` 和 `[2, 1]` 是不一樣的。 -> **不需要 `start**`，因為選了 2 之後，我們**還需要回頭**去選 1。
+* 這時候通常會改用一個 `visited` 陣列或是 `swap` 操作來記錄誰被用過了，而不是用 `start` 來切斷回頭路。
 
 
-        dfs([])
 
-        return results
-```
-
-
-#### Leetcode 77. Combinations
-```python
-class Solution:
-    def combine(self, n: int, k: int) -> List[List[int]]:
-        results = []
-
-        def dfs(curr, state):
-            if len(state) == k:
-                results.append(state.copy())
-                return 
-            
-            bag = range(curr, n+1)
-            # [2, 3, 4]
-            for i in bag:
-                state.append(i)
-
-                dfs(i+1, state)
-                # 3, 4, 5?
-
-                state.pop()
-
-        dfs(1, [])
-        return results
-```

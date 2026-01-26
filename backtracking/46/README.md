@@ -14,25 +14,25 @@ class Solution:
         results = []
         n = len(nums)
         visited = set()
-        def dfs(state):
+        def backtrack(curr):
             if len(visited) == n:
-                results.append(state.copy())
+                results.append(curr.copy())
                 return 
 
             
             for i in range(n):                    
                 if nums[i] not in visited:
-                    state.append(nums[i])
+                    curr.append(nums[i])
                     visited.add(nums[i])
 
-                    dfs(state)
+                    backtrack(curr)
 
                     # roll back
-                    state.pop()
+                    curr.pop()
                     visited.remove(nums[i])
 
 
-        dfs([])
+        backtrack([])
 
         return results
 ```
@@ -45,25 +45,25 @@ class Solution:
         n = len(nums)
 
         # visited 也可以當作參數傳遞
-        def dfs(state, visited):
-            if len(state) == n:
-                results.append(state) # 這裡不用 .copy() 了，因為 state 已經是副本
+        def backtrack(curr, visited):
+            if len(curr) == n:
+                results.append(curr) # 這裡不用 .copy() 了，因為 curr 已經是副本
                 return 
 
             for i in range(n):                    
                 if nums[i] not in visited:
                     # 關鍵：
-                    # 1. 傳入 state + [nums[i]] (一個新的 list)
+                    # 1. 傳入 curr + [nums[i]] (一個新的 list)
                     # 2. 傳入 visited.union({nums[i]}) (一個新的 set)
                     
-                    new_state = state + [nums[i]]
+                    new_curr = curr + [nums[i]]
                     new_visited = visited.union({nums[i]})
-                    dfs(new_state, new_visited)
+                    backtrack(new_curr, new_visited)
 
                     # 這裡不需要 "roll back"
-                    # 因為 state 和 visited 這兩個變數本身沒有被改變
+                    # 因為 curr 和 visited 這兩個變數本身沒有被改變
 
-        dfs([], set()) # 初始 state 和 visited
+        backtrack([], set()) # 初始 curr 和 visited
 
         return results
 ```
