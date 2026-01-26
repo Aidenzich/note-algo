@@ -17,7 +17,7 @@ DFS（深度優先搜尋） 配合 剪枝（Pruning） 的 Backtracking
 這即是將 **「合法性檢查 (Validity Check)」** 拆解後，直接放進遞迴的條件裡。
 
 
-### 思維模式：限制滿足 (Constraint Satisfaction)
+### 限制滿足模式 (Constraint Satisfaction)
 
 這類 Backtracking（回溯法）題目通常都有一個通用的思考模板，通常不建議去背 `open` 和 `close`，而是建議你記住這個思考模式：
 
@@ -50,16 +50,29 @@ class Solution:
     def generateParenthesis(self, n: int) -> List[str]:
         res = []
         
-        def backtrack(current_str, open_n, closed_n):
+        def backtrack(curr, open_n, closed_n):
+            
+            # 終止條件 (Base Case), 當左右括號都==n時，代表找到一個合法的組合
             if open_n == n and closed_n == n:
-                res.append(current_str)
+                res.append(curr)
                 return 
 
+            # 當左括號數量小於n時，可以選擇加入左括號
             if open_n < n:
-                backtrack(current_str + "(", open_n+1, closed_n)
+                backtrack(
+                    curr + "(", 
+                    open_n + 1, 
+                    closed_n
+                )
 
+            # 只有當右括號數量小於左括號數量時，才可以加入右括號
+            # 因為這樣才能確保括號的合法性
             if closed_n < open_n:
-                backtrack(current_str + ")", open_n, closed_n + 1)
+                backtrack(
+                    curr + ")",
+                    open_n,
+                    closed_n + 1
+                )
 
         backtrack("", 0, 0)
         return res
